@@ -4,6 +4,10 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
 
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const allowedOrigins = [
   "https://note-app-frontend-mu.vercel.app",
   "http://localhost:5173",
@@ -21,10 +25,6 @@ app.use(
     credentials: true,
   }),
 );
-
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Database Connection
 mongoose
