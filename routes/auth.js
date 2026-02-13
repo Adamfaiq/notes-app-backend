@@ -7,26 +7,17 @@ const User = require("../models/User");
 // REGISTER
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !email || !password) {
+    if (!email || !password) {
       return res
         .status(400)
         .json({ success: false, message: "All fields required" });
     }
 
-    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const existingUser = await User.findOne({ email });
 
     const user = await User.create({
-      username,
       email,
       password: hashedPassword,
     });
