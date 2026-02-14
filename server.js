@@ -34,6 +34,16 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB error:", err));
 
+// Drop username index (run once only)
+mongoose.connection.once("open", async () => {
+  try {
+    await mongoose.connection.db.collection("users").dropIndex("username_1");
+    console.log("Dropped username index");
+  } catch (err) {
+    console.log("Index already dropped or not found");
+  }
+});
+
 //Routes
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
